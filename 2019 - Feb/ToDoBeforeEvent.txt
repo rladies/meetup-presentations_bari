@@ -1,0 +1,38 @@
+To-Do-List per arrivare preparati all'evento di Febbraio
+
+
+1. Download R
+2. Donwload RStudio
+
+
+
+Pacchetti da installare
+
+# Install from CRAN
+install.packages("tidyverse")
+
+
+Usage
+library(tidyverse) will load the core tidyverse packages:
+
+ggplot2, for data visualisation.
+dplyr, for data manipulation.
+tidyr, for data tidying.
+readr, for data import.
+purrr, for functional programming.
+tibble, for tibbles, a modern re-imagining of data frames.
+stringr, for strings.
+forcats, for factors.
+
+Source:
+https://tidyverse.tidyverse.org/
+
+
+Completare INTRODUCTION TO R - FREE- 4-hours
+https://www.datacamp.com/courses/free-introduction-to-r
+
+Completare WRITING EFFICIENT R CODE - 
+The Art of Benchmarking - FREE
+https://www.datacamp.com/courses/writing-efficient-r-code
+
+

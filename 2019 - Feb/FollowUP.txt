@@ -1,0 +1,4 @@
+Esercitazioni gratuite per approfondire quanto detto oggi
+
+https://www.datacamp.com/courses/introduction-to-the-tidyverse
+https://www.kaggle.com/rtatman/manipulating-data-with-the-tidyverse
