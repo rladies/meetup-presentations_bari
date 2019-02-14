@@ -1,1 +1,11 @@
 # meetup-presentations_bari
+
+
+2018, Dicembre 
+KICK OFF - RLADIES BARI
+
+2019, Gennaio
+PRIMI PASSI IN R STUDIO
+
+2019, Marzo
+MANIPOLARE I DATI CON TIDYVERSE
