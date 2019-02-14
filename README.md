@@ -1,6 +1,6 @@
 # Archivo dei Meetup R-Ladies Bari, Italy
 
-R-Ladies Bari è stato fondata a Maggio del 2018.
+R-Ladies Bari è stata fondata a Maggio del 2018.
 
 Co-organizzatori: Francesca e Giovanna
 
