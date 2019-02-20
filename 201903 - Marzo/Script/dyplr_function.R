@@ -204,3 +204,5 @@ Employee_Diversity_in_Tech %>%
     arrange(desc(Date))
 
 
+### EXTRA
+# modificare il formato della DATA e fare delle operazioni con il campo DATE. 
