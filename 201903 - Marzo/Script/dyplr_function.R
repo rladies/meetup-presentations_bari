@@ -9,8 +9,7 @@ library(tidyverse)
 #library(dplyr)
 
 Employee_Diversity_in_Tech <- read_delim("~/GitHub/RLadies/meetup-presentations_bari/201903 - Marzo/dataset/Employee Diversity in Tech.csv", 
-                                         "\t", escape_double = FALSE, trim_ws = TRUE)
-
+                                         ";", escape_double = FALSE, trim_ws = TRUE)
 
 
 #2. DATASET EXPLORATION
@@ -75,10 +74,6 @@ head(select(Employee_Diversity_in_Tech, starts_with("%")))
 #remove % from colnames
 colnames(Employee_Diversity_in_Tech) <- gsub( "[\t\n\r\v\f %]", "", colnames(Employee_Diversity_in_Tech))
 colnames(Employee_Diversity_in_Tech)
-
-# working with DATE
-
-
 
 ####### FILTER
 
@@ -195,14 +190,15 @@ colnames(Employee_Diversity_in_Tech)
 
 
   
-Employee_Diversity_in_Tech %>%
-  mutate(Date = as.Date(Date, format = "%m %Y")) %>% 
+### EXTRA
+# utilizzare il campo 'Date' per altre operazioni 
+  
+#ESEMPIO
+  
+  Employee_Diversity_in_Tech %>%
     group_by(Date) %>%
     summarise(avg_Female = mean(Female),
               avg_Male = mean(Male),
               total = n()) %>%
     arrange(desc(Date))
-
-
-### EXTRA
-# modificare il formato della DATA e fare delle operazioni con il campo DATE. 
+  
