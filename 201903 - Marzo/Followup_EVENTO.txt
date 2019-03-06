@@ -1,4 +1,7 @@
 Esercitazioni gratuite per approfondire quanto detto oggi
 
+https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html
+https://www.r-exercises.com/2017/10/19/dplyr-basic-functions-exercises/
+https://www.listendata.com/2016/08/dplyr-tutorial.html
 https://www.datacamp.com/courses/introduction-to-the-tidyverse
 https://www.kaggle.com/rtatman/manipulating-data-with-the-tidyverse
