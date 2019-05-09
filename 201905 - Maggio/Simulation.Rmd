@@ -1,0 +1,64 @@
+---
+title: "Simulating data Experiment with nSubject"
+output: html_notebook
+---
+## Simulations for nnp experiment (adapted from laurel brehm, feb 11 2018)
+
+```{r packages}
+library(lme4)
+library(plyr)
+```
+
+We generate some data based on information from literature (Liu et al., 2016).
+There are 6 conditions because we have a 2 x 3 factorial design (within-subject and within-item design). Specifically, we have GroupMembership (ingroup|outgroup) x TrialType (neutral|invalid|valid).
+
+Basically, we will vary s for subs and i for items. Let's set the variables.
+```{r set the variables}
+s= 40 #let's have 40 participants
+ir= 216  #how many times is each item repeated = trials per item
+i=2*ir ## 2 items (the two faces)-- repeated 216times each in the whole experiment
+si=s*i ## total observations in study
+```
+
+To know the number of total observations per condition, per participant: (si/6)/s.
+
+### Draw random samples for each variable around effect from literature
+```{r drawing samples}
+#These create the raw values = OUR DEPENDENT MEASURE -->Reaction times
+ininv <-rnorm(si/6, mean=685, sd=79)
+inval <-rnorm(si/6, mean=719, sd=63)
+inneu <-rnorm(si/6, mean=712, sd=91)
+outinv <-rnorm(si/6, mean=694, sd=84)
+outval <-rnorm(si/6, mean=685, sd=79)
+outneu <-rnorm(si/6, mean=719, sd=63)
+
+#Set up vars for subs and items
+#this line of code creates the Subject ID vector 1x si (total number of observation in the study)
+#and repeats each subject id for the number of trial per condition, multiplied by conditon number 
+SubjectID <- rep(rep(1:s, each=i/6),6)  ## subjects per condition: everyone sees all trials
+
+#this line of code creates the item ID vector 1x si (total number of observation in the study)
+#and repeats each item id for the number of trial per condition
+itemID <- rep(1:6,si/6)
+#the two vectors should have same length
+```
+
+### Create dataframe and export
+
+```{r dataframe}
+## create data frame with all of them
+RT <- c(ininv,inval,inneu,outinv,outval,outneu)
+Group_Membership <- rep(c(rep("ingroup", si/144),rep("outgroup",si/144)),72)
+Trial_type <- rep( c(rep("invalid", si/432),rep("valid",si/432),rep("neutral",si/432)),144)
+ds <- cbind(RT,Group_Membership,Trial_type,SubjectID,itemID)
+ds <- as.data.frame(ds)
+ds$RT <- as.numeric(as.character(ds$RT))
+#write
+write.csv(ds, "SimulatedData.csv")
+```
+
+
+
+
+
+

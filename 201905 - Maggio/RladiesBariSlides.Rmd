@@ -1,0 +1,104 @@
+---
+title: "Rladies Bari"
+author: "Sara Iacozza"
+date: "RLadies Meetup - 7 Maggio, 2019"
+output: 
+  revealjs::revealjs_presentation:
+    fig_width: 7
+    fig_height: 6
+    fig_caption: false
+    highlight: pygments
+    center: true
+    #template: starwars.html
+    theme: black
+    transition: slide
+    #background_transition: convex #I don't see what its function is
+resource_files:
+  - Nijmegen_Bari.png
+  - RladiesNetherlands.png
+  - sole_mare.png
+  - Errortypes.png
+  - sfide.png
+  - Errortypesfun.png
+  - MEM.png
+  - randomeffects.png
+
+###https://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf
+
+---
+
+## Due cose su di me 
+
+- Originaria della provincia di Latina
+- Trasferita in Olanda dal 2015 
+- Ultimi 4 mesi del dottorato in Psicologia cognitiva del linguaggio al Max Planck Institute for Psycholinguistics a Nijmegen
+- Ho imparato R e statistica in inglese, quindi mi dovete scusare se non so i termini in italiano :)
+- Main co-founder di Rladies Nijmegen (2017)
+
+---
+
+![NijBari](Nijmegen_Bari.png)
+
+
+---
+RLadies in Olanda:
+![RLNeth](RladiesNetherlands.png)
+
+
+## Psicologia cognitiva
+
+studia il comportamento delle persone in relazione a degli stimoli  
+(e come il cervello supporta tali comportamenti)
+
+## Cosa e' indispensabile?
+
+- Persone, i.e., partecipanti (possibilmente pagati)
+- Stimoli esterni (e.g., presentati su display or attraverso speakers)
+- Il conseguente comportamento (quantificabile in qualche modo)
+
+## Prova tu! Piccolo esperimento 
+
+A:
+https://www.psytoolkit.org/cgi-bin/psy2.5.3/survey?s=87UDX
+
+B:
+https://www.psytoolkit.org/cgi-bin/psy2.5.3/survey?s=DDWEb
+
+
+
+
+## Le sfide della psicologia cognitiva
+
+Alta variabilita' ed effetti minuscoli:
+
+![sfide](sfide.png)
+
+
+## Statisticamente parlando…
+
+Idealmente:
+
+![Errors](Errortypes.png)
+
+## o anche..
+
+![Errors](Errortypesfun.png)
+
+## Mixed-effect models
+
+Invece di forzare (ed aggregare) i dati,  
+modelliamo gli effetti “random”  
+che non dipendono dalle nostre variabili indipendenti.
+
+![gif](https://media.giphy.com/media/jxjrmDHjgzCxEM4AiN/giphy.gif)
+
+## Mixed-effect models
+
+![MEM](MEM.png)
+
+## Fixed vs random effects
+
+## Random intercepts e slopes
+
+![REs](randomeffects.png)
+

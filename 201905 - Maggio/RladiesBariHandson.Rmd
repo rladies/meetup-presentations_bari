@@ -1,0 +1,335 @@
+---
+title: "RladiesBari Hands-on session"
+author: "Sara Iacozza"
+date: "RLadies Meetup - 7 Maggio, 2019"
+output: 
+  revealjs::revealjs_presentation:
+    fig_width: 7
+    fig_height: 6
+    fig_caption: false
+    highlight: pygments
+    center: true
+    theme: black
+    transition: slide
+    #background_transition: convex #I don't see what its function is
+resource_files:
+  - Nijmegen_Bari.png
+  - RladiesNetherlands.png
+  - sole_mare.png
+  - Errortypes.png
+  - sfide.png
+  - Errortypesfun.png
+  - MEM.png
+  - randomeffects.png
+  - figure_skewedRTs.png
+---
+
+## Due cose sui dati
+
+- Dati comportamentali reali
+- Variabili dipendenti: **accuratezza** & **tempi di reazione**
+- 2 x 2 factorial design, within-subject
+- Struttura random: Partecipanti
+
+## Carichiamo i pacchetti che ci serviranno (install.packages + library)
+```{r packages, message=FALSE, warning=FALSE, include=FALSE}
+
+# Install the needed packages by uncommenting and running the code.
+# Once you've run it, comment the code out again.
+
+# TIP: use ctrl/cmd + shift + c for uncommenting/commenting a bunch of lines at once (win/mac)
+# install.packages("markdown") # Rmarkdown packages
+# install.packages("knitr") # adding nice tables
+# install.packages("ggplot2") # making beautiful plots
+# install.packages("effects") # plotting models
+# install.packages("plyr") # summarize data
+# install.packages("dplyr") # summarize data
+# install.packages("lme4") # regression models (you should already have this package)
+# install.packages("kableExtra")
+# install.packages("sjPlot")
+# install.packages("lmerTest")
+
+# Load the needed packages
+library(markdown)
+library(knitr)
+library(ggplot2) 
+library(effects) 
+library(plyr) 
+library(dplyr) 
+library(lme4)
+library(kableExtra)
+library(sjPlot)
+library(lmerTest)
+```
+
+```{r prettyPvalues, include=FALSE}
+## also load in a function to round and make prettier output for p-values
+#reportP function
+reportP <- function(pValue){
+  if (pValue < 0.01){
+    result <- "p<0.001"
+  } else {
+    result <- sprintf("p=%.3f", pValue) # inserts a float into a string and simultaneously do rounding
+  }
+  return(result)
+}
+```
+
+```{r mergefunction_check, warning=FALSE, include=FALSE}
+#This function merges different individual files into a large matrix
+multmerge = function(mypath){
+filenames=list.files(path=mypath, full.names=TRUE)
+datalist1 = lapply(filenames, function(x){read.table(file=x,sep="\t", header=TRUE, stringsAsFactors = FALSE)})
+bind_rows(datalist1)
+}
+```
+
+
+## Carichiamo i dati e diamo un'occhiata
+
+```{r load, echo=FALSE}
+myfilepath="C:/Users/sara_/OneDrive/Documenti/RLadiesBari/PMT/"
+PMT<-multmerge(myfilepath)
+summary(PMT)
+```
+
+## Strutturiamo i dati!
+
+```{r shape it!, echo=FALSE}
+#drop cols that are useless
+PMT<-subset(PMT, select=c(1:3,5, 6,9,10))
+PMT <- PMT %>% rename(Group_Membership = Logo, Participant = Subject) #For renaming using dplyrpipe 
+#change values
+PMT[PMT$Group_Membership == "IN00.jpg",]$Group_Membership <- "Ingroup"
+PMT[PMT$Group_Membership == "OUT1.jpg",]$Group_Membership <- "Outgroup"
+#turn into factors
+factors<-c("Participant","Group_Membership","Block", "Condition")
+for (i in factors){
+  PMT[,i] <- as.factor(PMT[,i])
+}
+PMT$RTs<-as.numeric(as.character(PMT$RTs))
+PMT<-subset(PMT, PMT$RTs<2100) #too late
+PMT<-subset(PMT, PMT$RTs> 0) #too soon
+
+# let's have a look
+summary(PMT)
+```
+
+## Distribuzione Accuracy
+
+Non sembrano esserci molti errori...
+
+```{r hist, echo=FALSE}
+hist(PMT$Accuracy, col = "blue") # note that we add the colour to make it easier to see the bars
+```
+
+## Distribuzione  RTs 
+(solitamente skewed)
+
+```{r exclude RTs, echo=FALSE}
+PMT<-subset(PMT, PMT$Accuracy==1) #exclude incorrect trials
+hist(PMT$RTs, col = "blue") # note that we add the colour to make it easier to see the bars
+
+```
+
+## Predicted Hypotheses:
+
+1. Le persone sono piu' veloci a rispondere ad un'associazione *corretta*
+   che *incorreta* :
+   --> (RTs) matching<mismatching
+   
+2. Le persone son piu' veloci a rispondere ad un'associazione *in-group*
+   che *out-group* : 
+   --> (RTs) in-group<out-group, 
+   soprattuto nella condizione di matching: 
+   --> Group Membership x Condition
+
+
+## Distribuzione RTs per condizione
+
+```{r distribuzione, echo=FALSE, message=FALSE, warning=FALSE}
+#Raw data
+legend_title<-"Trial Condition"
+means <- aggregate(RTs ~  Group_Membership*Condition, PMT, mean)
+means$RTs<-round(means$RTs, 2)
+
+Fig1_ggplot<- ggplot(PMT) +
+  aes(x = Group_Membership,color = Condition, y = RTs) +
+  geom_boxplot() +
+  #facet_wrap(~SOA)+
+  stat_summary(fun.y=mean,
+               aes(group=Condition),
+               colour="darkred", geom="point",
+               shape=18, size=2,show_guide = FALSE, position = position_dodge(width = 3/4) ) +
+  geom_text(data = means, aes(label = round(RTs, 2), y = RTs + 100), size=3, position = position_dodge(width = 3/4))+
+  xlab("Group Membership") +
+  ylab("RTs") +
+  guides(color=guide_legend(legend_title))
+
+
+plot(Fig1_ggplot)
+# ggsave("K:\\My papers\\Experiment3\\Fig2.png", plot = last_plot(), device = NULL, path = NULL,
+#   scale = 1, width = NA, height = NA, units = c("in", "cm", "mm"),
+#   dpi = 300, limitsize = TRUE)
+```
+
+
+## Statisticamente parlando...
+
+![gif](https://media.giphy.com/media/jxjrmDHjgzCxEM4AiN/giphy.gif)
+
+## Semplice regressione lineare
+
+ lm(log10(RTs)~GroupMembership*Condition (+ Block)) 
+
+## + Random effects
+
+  lmer(log10(RTs)~GroupMembershipxCondition (+ Block)+
+  (1+GroupMembershipxCondition|Participant)) 
+  
+## Output
+
+```{r LMEM, echo=FALSE, message=FALSE, warning=FALSE}
+# set contrasts, sliding difference (difference between two consecutive levels starting from the grand average)
+## if you wanna know more:
+# https://stats.idre.ucla.edu/spss/faq/coding-systems-for-categorical-variables-in-regression-analysis-2/
+contrasts(PMT$Condition)<-MASS::contr.sdif(2)
+contrasts(PMT$Group_Membership)<-MASS::contr.sdif(2)
+contrasts(PMT$Block)<-MASS::contr.sdif(2)
+
+#exclude outliers
+before= nrow(x = PMT)
+PMT<- ddply(PMT, .(Participant, Condition, Group_Membership), subset, (RTs < mean(RTs) + 2.5*sd(RTs)& RTs > mean(RTs) - 2.5*sd(RTs)))
+after=nrow(PMT)
+loss<-before-after
+lossperc<-loss/before
+
+#maximal model that converges
+model_max<-lmer(log10(RTs)~Condition*Group_Membership+Block+(1+Condition|Participant), data=PMT,control = lmerControl(optCtrl = list(optimizer="bobyqa", maxfun=1e+9)))
+summary(model_max)
+#is overfitted?
+A<-isSingular(model_max) #it will give a boolean, if false, the movel is not overfitted
+# type ?isSingular to get info
+```
+
+```{r LMEM table, echo=FALSE, message=FALSE, warning=FALSE}
+#table using kable() function #why pvalues are not reported?
+coefficients(summary(model_max))%>% round(2)%>%
+  kable() %>%
+  kable_styling(font_size = 20)
+```
+
+```{r table for later, message=FALSE, warning=FALSE, include=FALSE}
+# #prepare for inline information
+ model_max.table<- coef(summary(model_max))
+
+## Pvalues and CIs
+```
+
+```{r table, echo=FALSE, message=FALSE, warning=FALSE}
+#HTML table
+tab_model(model_max, auto.label = FALSE)
+
+```
+
+
+## Data Viz (model output)
+
+```{r plot model, include=FALSE}
+
+#plot with Effects
+i<-effect( "Condition*Group_Membership",model_max, confidence.level=0.83) #remember to put the exact order of interactive terms as in the model
+i.df <- as.data.frame(i)
+g <- ggplot(i.df,aes(x=Group_Membership,y=fit,color=(Condition),ymin=lower,ymax=upper)) + 
+  geom_pointrange(position=position_dodge(width=.1)) + #geom_smooth(method="lm",se=T,size=1)+
+  xlab("Group_Membership") + ylab("log10 RTs") + ggtitle("Effect of Condition and Group Membership on RTs")
+plot(g)
+#save plot
+ggsave("lmer_results.png", plot = last_plot(), device = NULL, path = NULL,
+  scale = 1, width = NA, height = NA, units = c("in", "cm", "mm"),
+  dpi = 300, limitsize = TRUE)
+```
+```{r plot show, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::include_graphics("lmer_results.png")
+```
+
+
+## Da cosa deriva l'interazione?: pairwise comparisons
+
+L'effetto di Condition e' maggiore con In-group, pero'..
+
+```{r pairwise, echo=FALSE, message=FALSE, warning=FALSE}
+#pairwise comparisons using emmeans package
+lsm2 <- emmeans::emmeans(model_max,pairwise ~Condition | Group_Membership)
+summary(lsm2)
+```
+## Da cosa deriva l'interazione?: pairwise comparisons 2
+
+L'effetto di In-group e' nei maggiormente nei matching trials...
+
+```{r pairwise2, echo=FALSE, message=FALSE, warning=FALSE}
+#pairwise comparisons using emmeans package
+# https://cran.r-project.org/web/packages/emmeans/vignettes/interactions.html#covariates
+lsm <- emmeans::emmeans(model_max,pairwise ~Group_Membership | Condition )
+summary(lsm)
+```
+
+## Diagnostics
+
+```{r residual vs fitted, echo=FALSE}
+plot(model_max)
+
+```
+
+## Diagnostics - bad example
+
+```{r residual vs fitted bad, echo=FALSE}
+
+#maximal model that converges
+model_max_bad<-lmer((RTs^2)~Condition*Group_Membership+Block+(1+Condition+Group_Membership|Participant), data=PMT,control = lmerControl(optCtrl = list(optimizer="bobyqa", maxfun=1e+9)))
+#summary(model_max)
+plot(model_max_bad)
+
+```
+
+
+
+## Diagnostics 2
+
+```{r qqnorm,echo=FALSE}
+qqnorm(residuals(model_max))
+```
+
+
+## Diagnostics 2 - bad
+
+```{r qqnorm bad,echo=FALSE}
+qqnorm(residuals(model_max_bad))
+```
+
+## Risultati:
+
+I dati hanno supportato le nostre ipotesi.
+1. I partecipanti hanno classificato piu' velocemente un'associazione corretta che incorretta.
+
+## Risultati 2:
+
+2. I partecipanti hanno classificato piu' velocemente un'associazione ingroup che outgrop 
+
+## Risultati 3:
+
+E l'interazione dice che c'e' una differenza tra le condizioni di matching and mismatching per quanto riguarda l'effetto di Group Membership.
+
+Attraverso l'analisi di simple effects (pairwise comparisons), abbiamo visto che i partecipanti erano piu' veloci con le associazioni in-group ma maggiormente quando un'associazione era corretta.
+
+## Take-home messagge:
+
+I mixed-effect models sono importantissimi quando ci sono intra e inter variabilita' perche' aiutano a ridurre la possibilita' di attribuire importanza a cio' che non ne ha.
+
+## GRAZIE MILLE!
+
+Questions?
+
+
+
+
