@@ -1,0 +1,199 @@
+---
+title: "useR!2019 & tutorial: statistical data cleaning"
+author: "Giovanna de Vincenzo, bari@rladies.org"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  beamer_presentation:
+    theme: RLadies
+    fonttheme: "professionalfonts"
+    slide_level: 2
+    toc: true
+    includes:
+     #in_header: header.tex Uncomments if you need to use some specific packages and put in this       file
+header-includes:
+   - \city{Bari}
+---
+# 18:00-18:15: Welcome R-ladies Bari
+
+# 18:15-18:30: Presentazione R-ladies Bari 
+
+## R-Ladies Global - ShinyDashboard 
+
+R-Ladies was created in 2012 in *San Francisco* by **Gabriela de Queiroz** founded and it was the first women-focused R user group. 
+
+Currently, *R Ladies* concept has expanded to a global franchise of 163 active group and many other that are starting to be organized.
+
+<!-- \begin{center} -->
+<!-- \includegraphics[width=0.7\textwidth]{Woman_package.png} -->
+<!-- \end{center} -->
+
+\small{source: https://gqueiroz.shinyapps.io/rshinylady/}
+
+## R-Ladies Global - MISSION
+
+\begin{center}
+\includegraphics[height=35mm]{icon/r-ladies-mission.png}
+\end{center}
+
+## Chapter Locale
+
+Foto di gruppo, meetup Maggio 2019
+
+\begin{center}
+\includegraphics[height=50mm]{icon/foto_gruppo.jpg}
+\end{center}
+
+## Chapter Locale
+
+**R-Ladies Bari**
+
+* fondazione: Maggio 2018
+
+* co-founders: Francesca & Giovanna
+
+* primo meetup: Dicembre 2018
+
+* oggi: sesto meetup
+
+**I nostri canali social**
+
+ - [https://www.facebook.com/rladiesbari/](https://www.facebook.com/rladiesbari/)
+ - [https://www.meetup.com/rladies-bari/](https://www.meetup.com/rladies-bari/)
+ - [https://twitter.com/rladiesbari](https://twitter.com/rladiesbari/)
+<p></p>
+
+**GitHub Repo**
+
+ - [https://github.com/giodev11/r-ladies-bari](https://github.com/giodev11/r-ladies-bari)
+<p></p>
+
+## Call4Speaker & Volunteer
+
+Siamo sempre alla ricerca di persone che vogliano mettersi in gioco con la community.
+
+**Chi cerchiamo?**
+
+* R-Ladies Speakers per i prossimi meetup
+
+* R-Ladies co-organizers:
+    + organizzazione meetup/eventi R-Ladies
+    + gestione social media R-Ladies
+    + ricerca speaker
+    + altro
+    
+Compliate la survery: https://forms.gle/Za1Zj355QyaNHHxy8
+
+## Prossimi eventi
+
+- R Markdown meetup
+
+- R-Ladies coffee/Lunch/dinner networking
+
+- Workshop Community Building
+
+## Grazie per l'ospitalità IC406
+
+\begin{center}
+\includegraphics[height=60mm]{icon/IC406.jpg}
+\end{center}
+
+
+# 18:30-20:00: useR!2019 & tutorial
+
+## useR!2019 Tolosa
+
+\begin{picture}(0,0)
+\put(-20,-30){\includegraphics[height=45mm]{icon/user.PNG}}
+\end{picture}
+
+\begin{picture}(0,0)
+\put(80,-100){\includegraphics[height=30mm]{icon/user2.PNG}}
+\end{picture}
+
+
+## useR!2019 Tolosa
+
+This is the main meeting of the **R user and developer community**, its program consisting of both invited and user-contributed presentations:
+
+* The invited keynote lectures cover a broad spectrum of topics ranging *from technical and R-related computing issues to general statistical topics of current interest*.
+
+* The user-contributed presentations are submitted as abstracts prior to the conference and may be related to (virtually) any R-related topic. The presentations are typically organized in sessions of either broad or special interest, which also comprise a “free” discussion format. 
+
+Link:
+
+ - [useR!2019](http://www.user2019.fr/)
+ - [GitHub Repo Tutorials](https://github.com/sowla/useR2019-materials)
+ 
+ 
+## R Conference in Europe 19-20
+
+* WhyR, 26-29 settembre 2019, Warsaw
+    + @whyRconf
+
+* eRum2020, European R User Meeting, 27-30 maggio 2020, Milano
+    + @erum2020_conf, [http://2020.erum.io/](http://2020.erum.io/)
+    
+* uRos, The Use of R in Official Statistics, 6-8 Maggio, Vienna
+    + @uRosconf
+    
+* Rencountres R 2020, 15-17 Luglio 2020, Paris (in lingua FR)
+    + @rencontres_R
+
+## eRum2020 Milano
+
+* Diversity Scholarship
+
+## Tutorial 
+
+Materials: `https://github.com/giodev11/r-ladies-bari`
+
+Clone:
+```{bash, eval=FALSE}
+git clone 
+https://github.com/data-cleaning/useR2019_tutorial/201907 - Luglio/Workshop
+
+```
+Or download:
+\begin{picture}(0,0)
+\put(100,-60){\includegraphics[height=35mm]{icon/github.png}}
+\end{picture}
+
+## The Statistical Value Chain
+
+\begin{center}
+\includegraphics[width=100mm]{icon/valuechain.pdf}
+\end{center}
+
+## Code Sharing 
+
+Provate il codice con il vostro vicino e confrontate i risultati
+
+\centering\huge
+`code/code_with_your_neighbour.R`
+
+
+WIFI IC406: 
+
+## Verifica del codice
+
+
+
+# 20:00-20:15: Saluti e Networking
+
+---
+
+> \textbf{\color{rladiespurple}{{Thank you for your attention}}}
+
+
+> \textbf{\color{rladiespurple}{{Any questions or ideas?}}}
+
+---
+
+> *Happy Coding and Happy Holiday!!*
+
+>  **Reminder: Compliate la survery**
+
+
+>  See you in Settembre!
+
+
