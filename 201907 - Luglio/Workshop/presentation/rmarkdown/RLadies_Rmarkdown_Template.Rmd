@@ -98,6 +98,10 @@ Compliate la survery: https://forms.gle/Za1Zj355QyaNHHxy8
 \end{center}
 
 
+To download packages and github repo
+
+WIFI IC406: 
+
 # 18:30-20:00: useR!2019 & tutorial
 
 ## useR!2019 Tolosa
@@ -117,7 +121,7 @@ This is the main meeting of the **R user and developer community**, its program 
 
 * The invited keynote lectures cover a broad spectrum of topics ranging *from technical and R-related computing issues to general statistical topics of current interest*.
 
-* The user-contributed presentations are submitted as abstracts prior to the conference and may be related to (virtually) any R-related topic. The presentations are typically organized in sessions of either broad or special interest, which also comprise a “free” discussion format. 
+* The user-contributed presentations are submitted as abstracts prior to the conference and may be related to (virtually) any R-related topic. The presentations are typically organized in sessions of either broad or special interest, which also comprise a free discussion format. 
 
 Link:
 
@@ -139,10 +143,6 @@ Link:
 * Rencountres R 2020, 15-17 Luglio 2020, Paris (in lingua FR)
     + @rencontres_R
 
-## eRum2020 Milano
-
-* Diversity Scholarship
-
 ## Tutorial 
 
 Materials: `https://github.com/giodev11/r-ladies-bari`
@@ -150,7 +150,7 @@ Materials: `https://github.com/giodev11/r-ladies-bari`
 Clone:
 ```{bash, eval=FALSE}
 git clone 
-https://github.com/data-cleaning/useR2019_tutorial/201907 - Luglio/Workshop
+https://github.com/giodev11/r-ladies-bari
 
 ```
 Or download:
@@ -164,19 +164,18 @@ Or download:
 \includegraphics[width=100mm]{icon/valuechain.pdf}
 \end{center}
 
-## Code Sharing 
+## Code wt your neighbour 
 
-Provate il codice con il vostro vicino e confrontate i risultati
+Code with your neighbour and test the results
 
-\centering\huge
+\centering
 `code/code_with_your_neighbour.R`
 
 
-WIFI IC406: 
-
 ## Verifica del codice
 
-
+\centering
+`code/Solution_DataCleaning.rmd`
 
 # 20:00-20:15: Saluti e Networking
 

@@ -1,4 +1,4 @@
 \beamer@sectionintoc {1}{18:00-18:15: Welcome R-ladies Bari}{3}{0}{1}
 \beamer@sectionintoc {2}{18:15-18:30: Presentazione R-ladies Bari}{4}{0}{2}
 \beamer@sectionintoc {3}{18:30-20:00: useR!2019 \& tutorial}{12}{0}{3}
-\beamer@sectionintoc {4}{20:00-20:15: Saluti e Networking}{21}{0}{4}
+\beamer@sectionintoc {4}{20:00-20:15: Saluti e Networking}{20}{0}{4}

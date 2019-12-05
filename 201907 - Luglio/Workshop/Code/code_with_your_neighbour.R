@@ -1,4 +1,8 @@
-# Statistical Data Cleaning
+#Data Cleaning with R
+#R-Ladies Bari
+#July 23, 2019
+
+# TIME?
 
 #HINT -> use help() or ?function to get help 
 
@@ -52,9 +56,10 @@ your_dataset <- your_dataset %>%
 
 # 7. change class of variable ####
 
+class(your_dataset$NEIGHBORHOOD)
+
 #Question: what if we want to consider a character variable as a factor?
 #in this dataset, "NEIGHBORHOOD" is the most likely factor variable since it has discernable levels
-
 
 # 7.1 factor variables have levels. 
 
@@ -70,6 +75,8 @@ help(str_trim)
 
 
 # 9. capitalization in variable values using grep (Question)
+
+unique(your_dataset$NEIGHBORHOOD)
 
 # 9.1 CITY cITY cItY -> NEIGHBORHOOD variable 
 #NB: str_trim and grepl operate on character vectors so they likely coerce NEIGHBORHOOD to character
