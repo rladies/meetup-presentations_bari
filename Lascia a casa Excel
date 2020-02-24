@@ -1,0 +1,229 @@
+---
+title: "Lascia a casa Excel e vieni a scorpire R"
+author: "R-Ladies Bari"
+date: "28/2/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Lascia a casa Excel e vieni a scopire R
+
+Per la maggior parte di noi, lo strumento ideale per fare qualsiasi cosa analitica è Microsoft Excel.
+
+Durante questo meetup vi forniremo le risorse per iniziare a fare alcune delle cose base che sei abituato/a a fare in Excel in R. 
+
+
+**Nota**
+
+di solito ci sono molti modi per fare tutto in R. Vi mostreremo il modo in cui noi lo facciamo, ma se conoscete un modo migliore / più breve / più veloce / più facile di fare qualcosa, per favore intervenite e mostratecelo!
+
+## Le basi
+
+Cominciamo con le basi. Dovrai assicurarti di aver scaricato e installato R. Sto anche usando RStudio come mio IDE, quindi dovresti installarlo anche tu. Sarai contento di averlo fatto; è meraviglioso.
+
+Avrai anche bisogno di installare e caricare la libreria ggplot2, che non solo contiene il set di dati che vogliamo usare, ma tornerà utile anche quando arriveremo a creare diagrammi e grafici in seguito. Installeremo e cariceremo anche la libreria dplyr per aiutare a manipolare i dati.
+
+```{r install packages}
+install.packages("ggplot2")
+install.packages("dplyr")
+
+library(ggplot2)
+library(dplyr)
+```
+
+Utilizzeremo il set di dati sui diamanti fornito con ggplot2. Il set di dati contiene prezzi e altri attributi di oltre 50.000 diamanti.
+
+OK, quindi diamo un'occhiata iniziale ai dati. Puoi digitare i diamanti nella console R e stamperà il set di dati nella schermata della console, ma sconsiglio di farlo. Se sei un utente Excel, sei abituato a visualizzare i dati in un formato tabulare. Puoi farlo in una riga di codice.
+
+```{r install packages}
+diamonds<- data.frame(diamonds)
+```
+
+Questo avrebbe dovuto creare un oggetto frame di dati nel riquadro in alto a destra di RStudio (quello chiamato "Environment") e dovrebbe dire "53940 oss. Di 10 variabili" proprio accanto ad esso. Ciò significa che la tabella ha 53.940 righe e 10 colonne. Fai clic sui diamanti in quel riquadro e RStudio ti mostrerà la tabella.
+
+Dovrebbe sembrare come questo:
+
+```{r install packages}
+```
+
+Le prime 7 colonne sono abbastanza ben etichettate, quindi non ci scherzeremo con quelle, ma le ultime 3 non sono etichettate molto bene. Rinominiamo quindi le colonne 8, 9 e 10. Le chiameremo rispettivamente lunghezza, larghezza e profondità.
+
+```{r install packages}
+names(diamonds)[8]<-"length"
+names(diamonds)[9]<-"width"
+names(diamonds)[10]<-"depth"
+```
+
+Noterai che ora abbiamo due colonne denominate profondità. Rinominiamo il primo (colonna 5) in "depthperc."
+
+```{r install packages}
+names(diamonds)[5]<-"depthperc"
+```
+
+Ora il frame di dati dovrebbe apparire così:
+```{r install packages}
+```
+
+## Calcolare colonne
+
+
+Una delle cose più comuni che le persone fanno in Excel è eseguire calcoli. Ad esempio, se volessimo moltiplicare lunghezza, larghezza e profondità insieme; digitare = H2 * I2 * J2 nella cella K2 in Excel e quindi copiare quella formula fino all'ultima riga del set di dati. Quindi probabilmente chiameresti la colonna "cubica" o qualcosa del genere.
+
+In R, puoi eseguire tutte e 3 queste azioni con una singola funzione.
+
+```{r install packages}
+diamonds <- mutate(diamonds, cubic=length*width*depth)
+```
+
+Qui stiamo usando la funzione mutate sul set di dati di diamanti per moltiplicare lunghezza, larghezza e profondità. Sta assegnando il risultato di ciò a una nuova colonna chiamata cubica.
+
+Un altro modo per farlo, che può essere più accessibile a qualcuno proveniente da Excel, è il seguente.
+
+```{r install packages}
+diamonds$cubic <- diamonds$length * diamonds$width * diamonds$depth
+```
+
+Il frame di dati ora dovrebbe apparire così:
+
+```{r install packages}
+```
+
+**Challenge**: Try creating another column called "total" where you add the columns together instead of multiplying them.
+
+## Summaries
+
+
+L'attività successiva più comune per cui viene utilizzato Excel è il riepilogo dei dati. Queste attività vanno dal semplice calcolo dei totali di colonna alle tabelle pivot più intermedie. Ti mostrerò come fare entrambe le cose in R.
+
+Innanzitutto, supponiamo di voler sintetizzare il nostro set di dati e calcolare le medie complessive per tutti i campi numerici (carati, deepperc, tabella, prezzo, lunghezza, larghezza, profondità e cubi). Questo sarebbe l'equivalente di andare in fondo a una colonna in Excel, digitando = MEDIA (A2: A53940) e quindi copiando quella formula nella parte inferiore di tutte le altre colonne che si desidera fare la media.
+
+```{r install packages}
+colMeans(diamonds[,c(1,5:11)])
+```
+
+Qui, stiamo dicendo a R di calcolare le medie per colonna per la colonna 1 e quindi le colonne da 5 a 11. Questo stamperà le medie per quei numeri di colonna nella console R.
+
+Supponiamo che tu voglia aggiungere carati ai campi non numerici e quindi calcolare le medie per ogni combinazione del nuovo gruppo di campi non numerici. Ciò richiederebbe un po 'di lavoro in Excel (forse anche alcuni pivot-tabling), ma è abbastanza facile in R.
+
+Innanzitutto, arrotondiamo i valori in carati allo 0,25 carati più vicino in modo che i nostri numeri non siano dappertutto.
+
+```{r install packages}
+diamonds$carat2 <- round(diamonds$carat/.25)*.25
+```
+
+Ora creiamo il nostro riepilogo.
+
+Fondamentalmente stai dicendo a R di aggregare il frame di dati dei diamanti, prendere la media di tutti i campi numerici e raggruppare per i campi non numerici. Il risultato è un frame di dati di riepilogo simile al seguente:
+
+```{r install packages}
+Summary <- aggregate(cbind(depthperc, table, price, length, width, depth, cubic)~cut+color+clarity+carat2, data=diamonds, mean)
+```
+
+Successivamente, repliceremo l'utile funzionalità della tabella pivot di Excel. Ora che abbiamo le medie per ciascuno dei nostri campi numerici, scegline uno e vediamo come tende a cambiare in base ad alcuni degli attributi non numerici. Supponiamo di voler analizzare la differenza dei prezzi medi dei diamanti di diverse combinazioni di colore e chiarezza. In Excel, è possibile creare una tabella pivot con colore come etichetta riga, chiarezza come etichetta colonna e prezzo medio nella sezione Valori.
+
+In R, puoi usare il pacchetto reshape2 per fare esattamente la stessa cosa. Innanzitutto, installa e carica il pacchetto.
+
+```{r install packages}
+install.packages("reshape2")
+library(reshape2)
+```
+
+Quindi, useremo la funzione dcast per ottenere i nostri dati nello stesso formato di tabella pivot.
+
+```{r install packages}
+pivot_table <- dcast(diamonds[,c('color','clarity','price')], color~clarity, mean)
+```
+
+Qui, stiamo prendendo le colonne di colore, chiarezza e prezzo dal frame di dati diamanti, gettandole (ruotando) per colore (righe) e chiarezza (colonne) e calcolando il prezzo medio per ogni combinazione.
+
+**Challenge**: Try casting/pivot-tabling using a different combination of non-numerical fields and the averages of one of the other numerical fields.
+
+## VLookups
+
+Un'altra cosa molto comune che le persone fanno in Excel sono i vlookup.
+
+Quindi si digita qualcosa come = VLOOKUP (A2, K2: K50,2,0) e Excel cerca il valore in A2 nella colonna K e restituisce il valore nella colonna accanto al valore corrispondente.
+
+In R, possiamo farlo usando la funzione di unione merge.
+
+Innanzitutto, cambiamo il nome della colonna del prezzo nel frame di dati Riepilogo in avgprice. In questo modo, non avremo due campi di prezzo quando lo porteremo.
+```{r install packages}
+names(Summary)[7]<-"avgprice"
+```
+
+Quindi, uniamo i set di dati e portiamo il prezzo medio.
+
+```{r install packages}
+diamonds <- merge(diamonds, Summary[,c(1:4,7)], by.x=c("cut","color","clarity","carat2"), by.y=c("cut","color","clarity","carat2"))
+```
+
+**Challenge**: Merge the averages of some of the other numerical fields in the Summary table over to the diamonds data frame.
+
+**Bonus Challenge**: Calculate what percentage over/under priced each diamond is compared to the average. Hint: Remember how to do column calculations?
+
+## Conditional Statements
+
+Gli utenti di Excel usano periodicamente anche istruzioni condizionali (IF) per compilare i valori in base al rispetto di determinate condizioni. E' possibile farlo anche in R.
+
+Vogliamo classificare i diamanti in categorie di dimensioni come piccole, medie e grandi in base al loro peso in carati.
+
+```{r install packages}
+diamonds$size[diamonds$carat < 0.5] <- "Small"
+diamonds$size[diamonds$carat >=0.5 & diamonds$carat < 1] <- "Medium"
+diamonds$size[diamonds$carat >= 1] <- "Large"
+```
+
+## Charts and Graphs
+
+Excel ha un metodo molto "trascina e rilascia" per la creazione di grafici, mentre R ha un metodo molto "digita quello che vuoi". All'inizio questo può essere un po 'scoraggiante, ma una volta capito, inizierete a trovare più facile personalizzare grafici e grafici in R piuttosto che dover cercare in Excel l'opzione di menu giusta per apportare la modifica volere.
+
+Sulla base della nostra esperienza,  i 3 grafici più comuni in Excel sono: il grafico a barre/bar chart , il grafico a linee/line graph e il grafico a dispersione/scatterplot.
+
+## Bar Charts
+
+Dando un'occhiata al nostro dataset sui diamanti, supponiamo di voler creare un grafico che mostri quanti diamanti di ogni dimensione (piccola / media / grande) sono nei nostri dati. Ecco come farlo in R.
+
+```{r pressure, echo=FALSE}
+barplot(table(diamonds$size), main="Diamond Size Distribution", xlab="Size Category", ylab="Number of Diamonds", col="blue")
+```
+#Line Charts
+
+Il secondo tipo di grafico che creeremo è un grafico a linee. Di solito vengono utilizzati quando si dispone di dati che cambiano in un determinato periodo di tempo e si desidera vedere l'entità e la velocità di tali cambiamenti.
+
+Ecco come farlo con la funzione ggplot.
+```{r pressure, echo=FALSE}
+ggplot(diamonds, aes(clarity)) + geom_freqpoly(aes(group = color, colour = color)) + 
+  labs(x="Clarity", y="Number of Diamonds", title="Clarity by Color") 
+```
+#Scatterplots
+
+Ora facciamo uno scatterplot abbastanza semplice in modo da poter avere un'idea di come eseguirne uno in R. Per questo, useremo di nuovo il comando ggplot.
+
+```{r pressure, echo=FALSE}
+ggplot(diamonds, aes(carat, price, color=clarity)) + geom_point() + 
+  labs(x="Carat Weight", y="Price", title="Price by Carat Weight")
+```
+
+In alternativa, puoi produrre la stessa cosa anche con la funzione qplot.
+```{r pressure, echo=FALSE}
+qplot(carat, price, data=diamonds, color=clarity, xlab="Carat Weight", ylab="Price", main="Price by Carat Weight")
+```
+
+**Domanda**: Cosa mostra il diagramma?
+
+Per creare altri tipi di grafici e diagrammi,  ggplot2 è una risorsa meravigliosa che ha codice e elementi visivi per diversi tipi di grafici.
+
+## CONCLUSIONI
+
+Bene, il gioco è fatto: questa è una guida per iniziare ad utilizzare R e lasciare a casa Excel. 
+
+## Suggerimenti
+
+Trova il motivo per usare R Studio ogni giorno
+
+Internet è tuo amico.
+
+**Possa l'apprendimento essere con te!**
